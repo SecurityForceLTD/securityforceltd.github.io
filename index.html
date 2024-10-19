@@ -467,8 +467,7 @@ function submitForm() {
     const otherTraining = document.getElementById('otherTraining').value;
     const desiredRole = document.getElementById('desiredRole').value;
 
-    // Use the specific role in the form data and WhatsApp message
-    formData.desiredRole = desiredRole;
+
 
     // Check for empty fields
     if (!fullName || !city || !lastJob || !phone || !trainingLevel || !desiredRole || (trainingLevel === 'אחר' && !otherTraining)) {
