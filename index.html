@@ -178,6 +178,56 @@
             text-align: center; /* Center text alignment */
         }
 
+        .modal-content {
+            background-color: rgba(0, 0, 0, 0.85);
+            color: white;
+            border: 1px solid #FFD700;
+        }
+        
+        .modal-header, .modal-footer {
+            border-color: #FFD700;
+        }
+        
+        .modal-title {
+            color: #FFD700;
+        }
+        
+        .btn-outline-primary {
+            color: #FFD700;
+            border-color: #FFD700;
+        }
+        
+        .btn-outline-primary:hover, .btn-outline-primary.active {
+            background-color: #FFD700;
+            color: black;
+        }
+        
+        .btn-primary {
+            background-color: #FFD700;
+            border-color: #FFD700;
+            color: black;
+        }
+        
+        .btn-primary:hover {
+            background-color: #e6c200;
+            border-color: #e6c200;
+            color: black;
+        }
+        
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+        
+        .modal-dialog {
+            margin: 1rem;
+        }
+        
+        @media (max-width: 576px) {
+            .modal-dialog {
+                margin: 0.5rem;
+            }
+        }
 
 
 
@@ -256,6 +306,53 @@
     </div>
     <div id="alert-container"></div>
 
+    <!-- Modal for תפקיד מטה -->
+<div class="modal fade" id="officeRoleModal" tabindex="-1" aria-labelledby="officeRoleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="officeRoleModalLabel">בחר תפקיד מטה</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="d-grid gap-2">
+          <button type="button" class="btn btn-outline-primary" onclick="selectOfficeRole('מזכיר/ה')">מזכיר/ה</button>
+          <button type="button" class="btn btn-outline-primary" onclick="selectOfficeRole('רכז/ת גיוס')">רכז/ת גיוס</button>
+          <button type="button" class="btn btn-outline-primary" onclick="selectOfficeRole('מנהל/ת אזור')">מנהל/ת אזור</button>
+          <button type="button" class="btn btn-outline-primary" onclick="selectOfficeRole('אחר')">אחר</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ביטול</button>
+        <button type="button" class="btn btn-primary" onclick="confirmOfficeRole()">אישור</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal for תפקיד אבטחה -->
+<div class="modal fade" id="securityRoleModal" tabindex="-1" aria-labelledby="securityRoleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="securityRoleModalLabel">בחר תפקיד אבטחה</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="d-grid gap-2">
+          <button type="button" class="btn btn-outline-primary" onclick="selectSecurityRole('אבטחה')">אבטחה</button>
+          <button type="button" class="btn btn-outline-primary" onclick="selectSecurityRole('אירועים ומסיבות')">אירועים ומסיבות</button>
+          <button type="button" class="btn btn-outline-primary" onclick="selectSecurityRole('מתקן')">מתקן</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ביטול</button>
+        <button type="button" class="btn btn-primary" onclick="confirmSecurityRole()">אישור</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
     <script>
         const webAppUrl = 'https://script.google.com/macros/s/AKfycbx3sFkkCWf_M6fKUB1RQPlpXxhupj63lTrH-x6ZG7fTweW483tLSjTZcOiAdf97tJ_j/exec';
@@ -290,6 +387,55 @@
             }
         });
 
+        let selectedOfficeRole = '';
+let selectedSecurityRole = '';
+
+document.getElementById('desiredRole').addEventListener('change', function() {
+    if (this.value === 'תפקיד מטה') {
+        new bootstrap.Modal(document.getElementById('officeRoleModal')).show();
+    } else if (this.value === 'תפקיד אבטחה') {
+        new bootstrap.Modal(document.getElementById('securityRoleModal')).show();
+    }
+});
+
+function selectOfficeRole(role) {
+    selectedOfficeRole = role;
+    document.querySelectorAll('#officeRoleModal .btn-outline-primary').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    event.target.classList.add('active');
+}
+
+function selectSecurityRole(role) {
+    selectedSecurityRole = role;
+    document.querySelectorAll('#securityRoleModal .btn-outline-primary').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    event.target.classList.add('active');
+}
+
+function confirmOfficeRole() {
+    if (selectedOfficeRole) {
+        document.getElementById('desiredRole').value = `תפקיד מטה - ${selectedOfficeRole}`;
+        bootstrap.Modal.getInstance(document.getElementById('officeRoleModal')).hide();
+    } else {
+        alert('אנא בחר תפקיד');
+    }
+}
+
+function confirmSecurityRole() {
+    if (selectedSecurityRole) {
+        document.getElementById('desiredRole').value = `תפקיד אבטחה - ${selectedSecurityRole}`;
+        bootstrap.Modal.getInstance(document.getElementById('securityRoleModal')).hide();
+    } else {
+        alert('אנא בחר תפקיד');
+    }
+}
+
+
+
+        
+
 function submitForm() {
     const submitButton = document.getElementById('submit-btn');
     submitButton.disabled = true;
@@ -305,6 +451,9 @@ function submitForm() {
     const trainingLevel = document.getElementById('trainingLevel').value;
     const otherTraining = document.getElementById('otherTraining').value;
     const desiredRole = document.getElementById('desiredRole').value;
+
+    // Use the specific role in the form data and WhatsApp message
+    formData.desiredRole = desiredRole;
 
     // Check for empty fields
     if (!fullName || !city || !lastJob || !phone || !trainingLevel || !desiredRole || (trainingLevel === 'אחר' && !otherTraining)) {
