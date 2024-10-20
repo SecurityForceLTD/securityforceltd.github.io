@@ -399,13 +399,15 @@
         let selectedOfficeRole = '';
         let selectedSecurityRole = '';
 
-document.getElementById('desiredRole').addEventListener('change', function() {
-    if (this.value === 'תפקיד מטה') {
-        new bootstrap.Modal(document.getElementById('officeRoleModal')).show();
-    } else if (this.value === 'תפקיד אבטחה') {
-        new bootstrap.Modal(document.getElementById('securityRoleModal')).show();
-    }
-});
+        document.getElementById('desiredRole').addEventListener('change', function() {
+            if (this.value === 'תפקיד מטה') {
+                new bootstrap.Modal(document.getElementById('officeRoleModal')).show();
+            } else if (this.value === 'תפקיד אבטחה') {
+                new bootstrap.Modal(document.getElementById('securityRoleModal')).show();
+            } else if (this.value === 'reset') {
+                resetDesiredRole();
+            }
+        });
 
 function selectOfficeRole(role) {
     selectedOfficeRole = role;
@@ -423,33 +425,40 @@ function selectSecurityRole(role) {
     event.target.classList.add('active');
 }
 
-function confirmOfficeRole() {
-    if (selectedOfficeRole) {
-        const desiredRoleSelect = document.getElementById('desiredRole');
-        const newOption = new Option(`תפקיד מטה - ${selectedOfficeRole}`, `תפקיד מטה - ${selectedOfficeRole}`, true, true);
-        desiredRoleSelect.options.length = 0; // Clear existing options
-        desiredRoleSelect.add(newOption);
-        bootstrap.Modal.getInstance(document.getElementById('officeRoleModal')).hide();
-    } else {
-        alert('אנא בחר תפקיד');
-    }
-}
+        function confirmOfficeRole() {
+            if (selectedOfficeRole) {
+                const desiredRoleSelect = document.getElementById('desiredRole');
+                desiredRoleSelect.innerHTML = ''; // Clear existing options
+                desiredRoleSelect.add(new Option('איפוס', 'reset'));
+                desiredRoleSelect.add(new Option(`תפקיד מטה - ${selectedOfficeRole}`, `תפקיד מטה - ${selectedOfficeRole}`, false, true));
+                bootstrap.Modal.getInstance(document.getElementById('officeRoleModal')).hide();
+            } else {
+                alert('אנא בחר תפקיד');
+            }
+        }
 
-function confirmSecurityRole() {
-    if (selectedSecurityRole) {
-        const desiredRoleSelect = document.getElementById('desiredRole');
-        const newOption = new Option(`תפקיד אבטחה - ${selectedSecurityRole}`, `תפקיד אבטחה - ${selectedSecurityRole}`, true, true);
-        desiredRoleSelect.options.length = 0; // Clear existing options
-        desiredRoleSelect.add(newOption);
-        bootstrap.Modal.getInstance(document.getElementById('securityRoleModal')).hide();
-    } else {
-        alert('אנא בחר תפקיד');
-    }
-}
+        function confirmSecurityRole() {
+            if (selectedSecurityRole) {
+                const desiredRoleSelect = document.getElementById('desiredRole');
+                desiredRoleSelect.innerHTML = ''; // Clear existing options
+                desiredRoleSelect.add(new Option('איפוס', 'reset'));
+                desiredRoleSelect.add(new Option(`תפקיד אבטחה - ${selectedSecurityRole}`, `תפקיד אבטחה - ${selectedSecurityRole}`, false, true));
+                bootstrap.Modal.getInstance(document.getElementById('securityRoleModal')).hide();
+            } else {
+                alert('אנא בחר תפקיד');
+            }
+        }
 
+        function resetDesiredRole() {
+            const desiredRoleSelect = document.getElementById('desiredRole');
+            desiredRoleSelect.innerHTML = ''; // Clear existing options
+            desiredRoleSelect.add(new Option('תפקיד רצוי', '', true, true));
+            desiredRoleSelect.add(new Option('תפקיד מטה', 'תפקיד מטה'));
+            desiredRoleSelect.add(new Option('תפקיד אבטחה', 'תפקיד אבטחה'));
+            selectedOfficeRole = '';
+            selectedSecurityRole = '';
+        }
 
-
-        
 
 function submitForm() {
     const submitButton = document.getElementById('submit-btn');
